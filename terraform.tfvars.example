@@ -1,0 +1,54 @@
+# You may wish to populate some of the below variables from sources other than
+# this file (e.g. passwords).  Other options include sourcing from the command
+# line or from environment variables.  See the following page for more info:
+# https://www.terraform.io/docs/configuration/variables.html#assigning-values-to-root-module-variables
+
+vsphere_server = "vcenter-67.ssl.mirantis.net"
+#cloudProvider credentials
+vsphere_user = "<username>"
+vsphere_password = "<password>"
+
+# ../bin/govc ls
+# /MIRANTIS/vm
+# /MIRANTIS/network
+# /MIRANTIS/host
+# /MIRANTIS/datastore
+
+datacenter = "MIRANTIS"
+
+# ../bin/govc ls /MIRANTIS/host
+# For RHEL VMs: /MIRANTIS/host/MCC-BMteam-RHEL/Resources/Hosted-ResPool
+# For Ubuntu VMs: /MIRANTIS/host/MCC-BMteam/Resources/Hosted-ResPool
+resource_pool = "/MIRANTIS/host/MCC-BMteam/Resources/Hosted-ResPool"
+
+# ../bin/govc ls /MIRANTIS/datastore
+#/MIRANTIS/datastore/iscsi-storage-mcc
+datastore_cluster = "/MIRANTIS/datastore/iscsi-storage-mcc"
+
+# ../bin/govc ls /MIRANTIS/network
+#/MIRANTIS/network/VMWare_No_DHCP-MCC-Hosted
+#/MIRANTIS/network/VMWare-MCC-Hosted
+network = "VMWare-MCC-Hosted"
+
+# ../bin/govc ls /MIRANTIS/vm
+#/MIRANTIS/vm/MCC-Hosted/demo1
+#/MIRANTIS/vm/MCC-Hosted/demo2
+#/MIRANTIS/vm/MCC-Hosted/demo3
+#/MIRANTIS/vm/MCC-Hosted/demo4
+folder = "/MCC-Hosted/demo1"
+#/MIRANTIS/vm/MCC-Hosted/RHEL-7.8-VM-Template
+template_vm_linux = "/MIRANTIS/vm/MCC-Hosted/Ubuntu-20.04-k0s-tmpl"
+
+ssh_private_key_file = "<your key>"
+k0s_admin_username = "admin"
+k0s_admin_password = "mirantispass"
+k0s_lb_dns_name = "k0s.example.com"
+
+k0s_version = "v1.28.5+k0s.0"
+
+external_ip_address = "<external reverse proxy IP>"
+
+quantity_managers = 3
+quantity_workers = 0
+cpu_count = 4
+memory_count = 4096
