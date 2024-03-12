@@ -38,6 +38,9 @@ variable "template_vm_linux" {
 variable "ssh_private_key_file" {
   description = "Private key for SSH connections to created virtual machines; currently all machines must use the same key"
 }
+variable "ssh_public_key_file" {
+  description = "Public key for SSH connections to created virtual machines; currently all machines must use the same key"
+}
 
 variable "k0s_admin_username" {
   description = "Desired username for the k0s admin account"
@@ -84,4 +87,28 @@ variable "cpu_count" {
 variable "memory_count" {
   description = "Amount of memory in manager and worker VMs"
   default     = 4096
+}
+
+variable "ip_range_managers" {
+  description = "IP addresses to be assigned to manager VMs"
+  type        = string
+  default     = ""
+}
+
+variable "ip_range_workers" {
+  description = "IP addresses to be assigned to worker VMs"
+  type        = string
+  default     = ""
+}
+
+variable "k0s_lb_ip" {
+  description = "IP address to be assigned to k0s API LB"
+  type        = string
+  default     = ""
+}
+
+variable "network_gateway" {
+  description = "Gateway IP address to be used as default gateway for VMs"
+  type        = string
+  default     = ""
 }

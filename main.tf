@@ -50,13 +50,17 @@ data "vsphere_virtual_machine" "template_vm_linux" {
 module "managers" {
   source               = "./modules/virtual_machine"
   quantity             = var.quantity_managers
-  name_prefix          = "manager"
+  name_prefix          = "rk-manager"
   resource_pool_id     = data.vsphere_resource_pool.resource_pool.id
   datastore_id         = data.vsphere_datastore.datastore_cluster.id
   folder               = var.folder
   network_id           = data.vsphere_network.network.id
   template_vm          = data.vsphere_virtual_machine.template_vm_linux
   disk_size            = 100
+  ip_range             = var.ip_range_managers
+  network_gateway      = var.network_gateway
+  k0s_lb_ip            = var.k0s_lb_ip
+  ssh_key              = file(var.ssh_public_key_file)
 }
 
 module "workers" {
@@ -69,6 +73,9 @@ module "workers" {
   network_id           = data.vsphere_network.network.id
   template_vm          = data.vsphere_virtual_machine.template_vm_linux
   disk_size            = 100
+  ip_range             = var.ip_range_workers
+  network_gateway      = var.network_gateway
+  ssh_key              = file(var.ssh_public_key_file)
 }
 
 # module "workers_windows" {

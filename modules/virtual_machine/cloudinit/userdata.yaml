@@ -1,7 +1,98 @@
-#cloud-config 
-packages:
-  - nfs-kernel-server
-  - docker
-  - docker.io
+#cloud-config
+hostname: ${hostname}
+create_hostname_file: true
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ${ssh_key}
+write_files:
+- content: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: kube-vip
+      namespace: kube-system
+      labels:
+        app: kube-vip
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: kube-vip
+      template:
+        metadata:
+          name: kube-vip
+          namespace: kube-system
+          labels:
+            app: kube-vip
+        spec:
+          nodeSelector:
+            node.k0sproject.io/role: control-plane
+          containers:
+          - args:
+            - manager
+            env:
+            - name: vip_arp
+              value: "true"
+            - name: port
+              value: "6443"
+            - name: vip_interface
+              value: ""
+            - name: vip_cidr
+              value: "32"
+            - name: cp_enable
+              value: "true"
+            - name: cp_namespace
+              value: kube-system
+            - name: vip_ddns
+              value: "false"
+            - name: svc_enable
+              value: "true"
+            - name: svc_leasename
+              value: plndr-svcs-lock
+            - name: svc_election
+              value: "true"
+            - name: vip_leaderelection
+              value: "true"
+            - name: vip_leasename
+              value: plndr-cp-lock
+            - name: vip_leaseduration
+              value: "15"
+            - name: vip_renewdeadline
+              value: "10"
+            - name: vip_retryperiod
+              value: "2"
+            - name: address
+              value: "${k0s_lb_ip}"
+            - name: prometheus_server
+              value: :2112
+            image: ghcr.io/kube-vip/kube-vip:v0.6.4
+            imagePullPolicy: IfNotPresent
+            name: kube-vip
+            resources: {}
+            securityContext:
+              capabilities:
+                add:
+                - NET_ADMIN
+                - NET_RAW
+            volumeMounts:
+            - mountPath: /etc/kubernetes/admin.conf
+              name: kubeconfig
+          hostNetwork: true
+          volumes:
+          - hostPath:
+              path: /var/lib/k0s/pki/admin.conf
+            name: kubeconfig
+          hostAliases:
+          - hostnames:
+            - kubernetes
+            ip: 127.0.0.1
+          nodeSelector:
+            node.k0sproject.io/role: control-plane
+  path: /var/lib/k0s/manifests/kube-vip/kube-vip.yaml
 runcmd:
-    - mkdir -p /mnt/sharedfolder
+  - [ rm, /etc/machine-id ]
+  - [ rm, /var/lib/dbus/machine-id ]
+  - [ dbus-uuidgen, --ensure ]
+  - [ systemd-machine-id-setup ]

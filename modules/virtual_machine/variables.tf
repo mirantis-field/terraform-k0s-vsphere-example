@@ -39,3 +39,32 @@ variable "memory_count" {
   description = "Amount of memory in manager and worker VMs"
   default     = 4096
 }
+
+variable "ip_range" {
+  description = "IP range to be assigned to VMs"
+  type        = string
+  default     = ""
+}
+
+variable "k0s_lb_ip" {
+  description = "IP address to be assigned to k0s API LB"
+  type        = string
+  default     = ""
+}
+
+variable "network_gateway" {
+  description = "Gateway IP address to be used as default gateway for VMs"
+  type        = string
+  default     = ""
+}
+
+variable "ip_prefix" {
+  description = "IP prefix to be used for IP addresses"
+  default     = 24
+}
+
+variable "ssh_key" {
+  description = "Public SSH key to be added to authorized_keys"
+  type        = string
+  default     = ""
+}
