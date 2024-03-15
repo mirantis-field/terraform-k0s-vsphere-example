@@ -11,7 +11,6 @@ locals {
             "--kubelet-extra-args=\"--cloud-provider=external\""
           ]
           role = "controller+worker"
-          #noTaints = true
       }
   ]
 
@@ -49,15 +48,12 @@ locals {
               sans = [
                 var.k0s_lb_ip
               ]
-              #tunneledNetworkingMode = false
             }
             network = {
-# Node local balancing when you have multiple controllers, but no external reverse proxy
              nodeLocalLoadBalancing = {
                enabled = true
                type = "EnvoyProxy"
              }
-              #custom means that podCIDR is ignored. As cilium is deployed as helm, the default Cilium podCIDR is used: 10.0.0.0/8
               provider = "calico"
             }
             extensions = {
