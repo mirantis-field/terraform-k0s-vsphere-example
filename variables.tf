@@ -21,14 +21,18 @@ variable "folder" {
   default = ""
 }
 
-variable "datastore_cluster" {
+variable "datastore" {
 }
 
 variable "network" {
 }
 
-variable "template_vm_linux" {
-  description = "VM to use as a template for the linux nodes (managers, workers)"
+variable "controller_vm_template" {
+  description = "VM to use as a template for controllers"
+}
+
+variable "worker_vm_template" {
+  description = "VM to use as a template for workers"
 }
 
 variable "ssh_private_key_file" {
@@ -91,4 +95,9 @@ variable "nameserver" {
   description = "DNS to be added to the VM network configuration"
   type        = string
   default     = ""
+}
+
+variable "cluster_name" {
+  description = "Name of the cluster (will be used as prefix for cluster nodes)"
+  default     = "k0s-cluster"
 }

@@ -42,7 +42,7 @@ locals {
           apiVersion = "k0s.k0sproject.io/v1beta1"
           kind = "ClusterConfig"
           metadata = {
-            name = "k0s-cluster"
+            name = "${var.cluster_name}"
           }
           spec = {
             api = {

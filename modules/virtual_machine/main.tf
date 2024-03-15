@@ -10,7 +10,7 @@ locals {
 resource "vsphere_virtual_machine" "vm" {
     count = var.quantity
 
-    name = "${var.name_prefix}${count.index}"
+    name = "${var.name_prefix}${(count.index + 1)}"
     resource_pool_id = var.resource_pool_id
     #datastore_cluster_id = var.datastore_cluster_id
     datastore_id = var.datastore_id
@@ -30,7 +30,7 @@ resource "vsphere_virtual_machine" "vm" {
     enable_disk_uuid = true # NB the VM must have disk.EnableUUID=1 for, e.g., k8s persistent storage.
 
     disk {
-        label            = "${var.name_prefix}${count.index}"
+        label            = "${var.name_prefix}${(count.index + 1)}"
         size             = var.disk_size
         thin_provisioned = var.template_vm.disks.0.thin_provisioned
     }
