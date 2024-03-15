@@ -1,6 +1,6 @@
 locals {
-  managers = [
-    for host in module.managers.machines : {
+  controllers = [
+    for host in module.controllers.machines : {
       ssh = {
             address = host.default_ip_address
             user    = "ubuntu"
@@ -34,7 +34,7 @@ locals {
     apiVersion = "k0sctl.k0sproject.io/v1beta1"
     kind       = "Cluster"
     spec = {
-      hosts = concat(local.managers, local.workers)
+      hosts = concat(local.controllers, local.workers)
       k0s = {
         version = var.k0s_version
         dynamicConfig = false

@@ -42,7 +42,7 @@ resource "vsphere_virtual_machine" "vm" {
     extra_config = {
        "guestinfo.userdata"          = base64encode(templatefile("${path.module}/cloudinit/userdata.yaml", { k0s_lb_ip = var.k0s_lb_ip, ssh_key = var.ssh_key, hostname = "${var.name_prefix}${count.index}"}))
        "guestinfo.userdata.encoding" = "base64"
-       "guestinfo.metadata"          = base64encode(templatefile("${path.module}/cloudinit/metadata.yaml", { ip_addr = format("${local.start_parts[0]}.${local.start_parts[1]}.${local.start_parts[2]}.%s", sum([local.start_last_octet, count.index])), gateway_addr = var.network_gateway, hostname = "${var.name_prefix}${count.index}", nameserver = var.nameserver }))
+       "guestinfo.metadata"          = base64encode(templatefile("${path.module}/cloudinit/metadata.yaml", { ip_addr = format("${local.start_parts[0]}.${local.start_parts[1]}.${local.start_parts[2]}.%s", sum([local.start_last_octet, count.index])), gateway_addr = var.network_gateway, hostname = "${var.name_prefix}${(count.index + 1)}", nameserver = var.nameserver }))
        "guestinfo.metadata.encoding" = "base64"
     }
 }

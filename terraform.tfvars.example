@@ -45,11 +45,11 @@ ssh_public_key_file = "/path/to/pub_key"
 
 k0s_version = "v1.28.5+k0s.0"
 
-quantity_managers = 2
+quantity_controllers = 2
 quantity_workers = 1
 cpu_count = 4
 memory_count = 4096
-ip_range_managers = "172.16.38.149-172.16.38.151"
+ip_range_controllers = "172.16.38.149-172.16.38.151"
 ip_range_workers = "172.16.38.152-172.16.38.153"
 k0s_lb_ip = "172.16.38.174"
 network_gateway = "172.16.38.1"

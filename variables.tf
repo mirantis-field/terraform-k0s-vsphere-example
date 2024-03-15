@@ -47,8 +47,8 @@ variable "k0s_version" {
   default     = ""
 }
 
-variable "quantity_managers" {
-  description = "Number of k0s manager VMs to create"
+variable "quantity_controllers" {
+  description = "Number of k0s controller VMs to create"
   default     = 3
 }
 
@@ -58,17 +58,17 @@ variable "quantity_workers" {
 }
 
 variable "cpu_count" {
-  description = "Number of CPUs in manager and worker VMs"
+  description = "Number of CPUs in contoller and worker VMs"
   default     = 4
 }
 
 variable "memory_count" {
-  description = "Amount of memory in manager and worker VMs"
+  description = "Amount of memory in controller and worker VMs"
   default     = 4096
 }
 
-variable "ip_range_managers" {
-  description = "IP addresses to be assigned to manager VMs"
+variable "ip_range_controllers" {
+  description = "IP addresses to be assigned to controller VMs"
   type        = string
   default     = ""
 }

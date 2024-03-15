@@ -31,12 +31,12 @@ variable "disk_size" {
 }
 
 variable "cpu_count" {
-  description = "Number of CPUs in manager and worker VMs"
+  description = "Number of CPUs in controller and worker VMs"
   default     = 4
 }
 
 variable "memory_count" {
-  description = "Amount of memory in manager and worker VMs"
+  description = "Amount of memory in controller and worker VMs"
   default     = 4096
 }
 
