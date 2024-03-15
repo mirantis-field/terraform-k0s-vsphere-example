@@ -4,39 +4,14 @@
 # https://www.terraform.io/docs/configuration/variables.html#assigning-values-to-root-module-variables
 
 vsphere_server = "vcenter-67.ssl.mirantis.net"
-#cloudProvider credentials
 vsphere_user = "<username>"
 vsphere_password = "<password>"
 
-# ../bin/govc ls
-# /MIRANTIS/vm
-# /MIRANTIS/network
-# /MIRANTIS/host
-# /MIRANTIS/datastore
-
 datacenter = "MIRANTIS"
-
-# ../bin/govc ls /MIRANTIS/host
-# For RHEL VMs: /MIRANTIS/host/MCC-BMteam-RHEL/Resources/Hosted-ResPool
-# For Ubuntu VMs: /MIRANTIS/host/MCC-BMteam/Resources/Hosted-ResPool
 resource_pool = "/MIRANTIS/host/MCC-BMteam/Resources/Hosted-ResPool"
-
-# ../bin/govc ls /MIRANTIS/datastore
-#/MIRANTIS/datastore/iscsi-storage-mcc
 datastore = "/MIRANTIS/datastore/iscsi-storage-mcc"
-
-# ../bin/govc ls /MIRANTIS/network
-#/MIRANTIS/network/VMWare_No_DHCP-MCC-Hosted
-#/MIRANTIS/network/VMWare-MCC-Hosted
 network = "VMWare-MCC-Hosted"
-
-# ../bin/govc ls /MIRANTIS/vm
-#/MIRANTIS/vm/MCC-Hosted/demo1
-#/MIRANTIS/vm/MCC-Hosted/demo2
-#/MIRANTIS/vm/MCC-Hosted/demo3
-#/MIRANTIS/vm/MCC-Hosted/demo4
 folder = "/MCC-Hosted/demo1"
-#/MIRANTIS/vm/MCC-Hosted/RHEL-7.8-VM-Template
 controller_vm_template = "/MIRANTIS/vm/MCC-Hosted/Ubuntu-20.04-k0s-tmpl"
 worker_vm_template = "/MIRANTIS/vm/MCC-Hosted/Ubuntu-20.04-k0s-tmpl"
 
