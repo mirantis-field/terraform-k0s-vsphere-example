@@ -68,3 +68,9 @@ variable "ssh_key" {
   type        = string
   default     = ""
 }
+
+variable "nameserver" {
+  description = "DNS to be added to the VM network configuration"
+  type        = string
+  default     = ""
+}

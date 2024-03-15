@@ -6,12 +6,12 @@ locals {
             user    = "ubuntu"
             keyPath = var.ssh_private_key_file
           }
-          #installFlags = [
-          #  "--enable-cloud-provider",
-          #  "--kubelet-extra-args=\"--cloud-provider=external\""
-          #]
+          installFlags = [
+            "--enable-cloud-provider",
+            "--kubelet-extra-args=\"--cloud-provider=external\""
+          ]
           role = "controller+worker"
-          noTaints = true
+          #noTaints = true
       }
   ]
 
@@ -22,10 +22,10 @@ locals {
             user    = "ubuntu"
             keyPath = var.ssh_private_key_file
           }
-          #installFlags = [
-          #  "--enable-cloud-provider",
-          #  "--kubelet-extra-args=\"--cloud-provider=external\""
-          #]
+          installFlags = [
+            "--enable-cloud-provider",
+            "--kubelet-extra-args=\"--cloud-provider=external\""
+          ]
           role = "worker"
       }
   ]
@@ -47,7 +47,7 @@ locals {
           spec = {
             api = {
               sans = [
-                var.external_ip_address
+                var.k0s_lb_ip
               ]
               #tunneledNetworkingMode = false
             }
@@ -59,6 +59,36 @@ locals {
              }
               #custom means that podCIDR is ignored. As cilium is deployed as helm, the default Cilium podCIDR is used: 10.0.0.0/8
               provider = "calico"
+            }
+            extensions = {
+              helm = {
+                repositories = [
+                  {
+                    name = "vsphere-cpi"
+                    url = "https://kubernetes.github.io/cloud-provider-vsphere"
+                  },
+                ]
+                charts = [
+                  {
+                    name = "vsphere-cpi"
+                    chartname = "vsphere-cpi/vsphere-cpi"
+                    namespace = "kube-system"
+                    version = "1.29.0"
+                    values = <<-EOT
+                      config:
+                        enabled: true
+                        vcenter: ${var.vsphere_server}
+                        username: ${var.vsphere_user}
+                        password: ${var.vsphere_password}
+                        datacenter: ${var.datacenter}
+                        region: ""
+                        zone: ""
+                        secret:
+                          name: cloud-provider-vsphere-credentials
+                    EOT
+                  },
+                ]
+              }
             }
           }
         }

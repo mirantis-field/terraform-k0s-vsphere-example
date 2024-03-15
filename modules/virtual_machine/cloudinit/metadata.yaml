@@ -9,4 +9,4 @@ network:
         - ${ip_addr}/24
       gateway4: ${gateway_addr} 
       nameservers:
-        addresses: [8.8.8.8]
+        addresses: [${nameserver}]

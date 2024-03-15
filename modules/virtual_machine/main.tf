@@ -37,37 +37,12 @@ resource "vsphere_virtual_machine" "vm" {
 
     clone {
         template_uuid = var.template_vm.id
-
-#        customize {
-#            network_interface {
-#              ipv4_address = format("${local.start_parts[0]}.${local.start_parts[1]}.${local.start_parts[2]}.%s", sum([local.start_last_octet, count.index]))
-#              ipv4_netmask = var.ip_prefix 
-#            }
-#
-#            # Hmm, the linux and windows options might make it tricky to have
-#            # a single module for handling virtual machines.
-#            linux_options {
-#                host_name = "${var.name_prefix}${count.index}"
-#                domain    = "test.internal"
-#            }
-#            ipv4_gateway = var.network_gateway
-#        }
     }
 
-#you need to enable vApp for the VM and add hostname and user-data fields in vSphere UI to be able to use the block below
-#vapp also requires the clone block above
-#    vapp {
-#        properties = {
-#            hostname = "${var.name_prefix}${count.index}"
-#            user-data = base64encode(file("${path.module}/cloudinit/kickstart.yaml"))
-#        }
-#    }
-
-#limited use without vapp
     extra_config = {
        "guestinfo.userdata"          = base64encode(templatefile("${path.module}/cloudinit/userdata.yaml", { k0s_lb_ip = var.k0s_lb_ip, ssh_key = var.ssh_key, hostname = "${var.name_prefix}${count.index}"}))
        "guestinfo.userdata.encoding" = "base64"
-       "guestinfo.metadata"          = base64encode(templatefile("${path.module}/cloudinit/metadata.yaml", { ip_addr = format("${local.start_parts[0]}.${local.start_parts[1]}.${local.start_parts[2]}.%s", sum([local.start_last_octet, count.index])), gateway_addr = var.network_gateway, hostname = "${var.name_prefix}${count.index}"}))
+       "guestinfo.metadata"          = base64encode(templatefile("${path.module}/cloudinit/metadata.yaml", { ip_addr = format("${local.start_parts[0]}.${local.start_parts[1]}.${local.start_parts[2]}.%s", sum([local.start_last_octet, count.index])), gateway_addr = var.network_gateway, hostname = "${var.name_prefix}${count.index}", nameserver = var.nameserver }))
        "guestinfo.metadata.encoding" = "base64"
     }
 }

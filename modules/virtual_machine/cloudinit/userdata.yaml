@@ -27,6 +27,10 @@ write_files:
           labels:
             app: kube-vip
         spec:
+          tolerations:
+            - key: node-role.kubernetes.io/master
+            operator: Exists
+            effect: NoSchedule
           nodeSelector:
             node.k0sproject.io/role: control-plane
           containers:

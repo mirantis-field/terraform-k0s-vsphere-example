@@ -2,14 +2,12 @@ terraform {
   required_providers {
     vsphere = {
       source  = "hashicorp/vsphere"
-      #version = "~> 2.6.1"
       version = "~> 1.15.0"
     }
   }
 }
 
 provider "vsphere" {
-  #version        = "1.15.0"
   vsphere_server = var.vsphere_server
   user           = var.vsphere_user
   password       = var.vsphere_password
@@ -42,11 +40,6 @@ data "vsphere_virtual_machine" "template_vm_linux" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
-# data "vsphere_virtual_machine" "template_vm_windows" {
-#   name          = ""
-#   datacenter_id = data.vsphere_datacenter.dc.id
-# }
-
 module "managers" {
   source               = "./modules/virtual_machine"
   quantity             = var.quantity_managers
@@ -61,6 +54,7 @@ module "managers" {
   network_gateway      = var.network_gateway
   k0s_lb_ip            = var.k0s_lb_ip
   ssh_key              = file(var.ssh_public_key_file)
+  nameserver           = var.nameserver
 }
 
 module "workers" {
@@ -76,16 +70,5 @@ module "workers" {
   ip_range             = var.ip_range_workers
   network_gateway      = var.network_gateway
   ssh_key              = file(var.ssh_public_key_file)
+  nameserver           = var.nameserver
 }
-
-# module "workers_windows" {
-#   source = "./modules/virtual_machine"
-#   quantity = var.quantity_workers_windows
-#   name_prefix = "worker"
-#   resource_pool_id = data.vsphere_resource_pool.resource_pool.id
-#   datastore_cluster_id = data.vsphere_datastore_cluster.datastore_cluster.id
-#   folder = "Launchpad team"
-#   network_id = data.vsphere_network.network.id
-#   template_vm = data.vsphere_virtual_machine.template_windows
-#   disk_size = 100
-# }
